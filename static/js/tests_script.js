@@ -1,4 +1,3 @@
-// Элементы DOM
 const countryName = document.getElementById('country-name');
 const answerInput = document.getElementById('answer-input');
 const submitBtn = document.getElementById('submit-btn');
@@ -18,20 +17,17 @@ const currentCardSpan = document.getElementById('current-card');
 const totalCardsSpan = document.getElementById('total-cards');
 const progressBar = document.getElementById('progress-bar');
 
-// Состояние приложения
 let currentContinent = 'Europe';
 let currentCards = [];
 let currentIndex = 0;
 let userAnswers = [];
 let testSubmitted = false;
 
-// Инициализация приложения
 function init() {
     loadContinent(currentContinent);
     initEventHandlers();
 }
 
-// Инициализация обработчиков событий
 function initEventHandlers() {
     continentSelect.addEventListener('change', handleContinentChange);
     submitBtn.addEventListener('click', checkAnswer);
@@ -45,11 +41,9 @@ function initEventHandlers() {
     });
 }
 
-// Загрузка вопросов для континента
 function loadContinent(continent) {
     currentContinent = continent;
     
-    // Фильтруем страны по выбранному континенту
     currentCards = allCountries.filter(country => 
         country.continent.toLowerCase() === continent.toLowerCase()
     ).map(country => ({
@@ -61,7 +55,6 @@ function loadContinent(continent) {
     userAnswers = Array(currentCards.length).fill(null);
     testSubmitted = false;
     
-    // Скрыть результаты и показать карточку теста
     resultContainer.style.display = 'none';
     testCard.style.display = 'block';
     
@@ -72,7 +65,6 @@ function loadContinent(continent) {
     updateProgressBar();
 }
 
-// Обновление отображения вопроса
 function updateQuestionDisplay() {
     if (currentCards.length === 0) {
         countryName.textContent = 'Нет доступных стран';
@@ -83,23 +75,19 @@ function updateQuestionDisplay() {
     const currentCountry = currentCards[currentIndex];
     countryName.textContent = currentCountry.country;
     
-    // Сброс ввода и обратной связи
     answerInput.value = userAnswers[currentIndex]?.answer || '';
     answerInput.disabled = userAnswers[currentIndex] !== null;
     submitBtn.disabled = userAnswers[currentIndex] !== null;
 
     resetAnswerFeedback();
     
-    // Показать обратную связь, если ответ существует
     if (userAnswers[currentIndex] !== null) {
         showAnswerFeedback(userAnswers[currentIndex]);
     }
     
-    // Обновление счетчика текущего вопроса
     currentCardSpan.textContent = currentIndex + 1;
 }
 
-// Проверка ответа пользователя
 function checkAnswer() {
     if (testSubmitted || currentCards.length === 0) return;
     
@@ -113,30 +101,24 @@ function checkAnswer() {
     const correctAnswer = currentCards[currentIndex].capital;
     const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
     
-    // Сохранить ответ пользователя
     userAnswers[currentIndex] = {
         answer: userAnswer,
         isCorrect: isCorrect,
         correctAnswer: correctAnswer
     };
     
-    // Показать обратную связь
     showAnswerFeedback(userAnswers[currentIndex]);
     
-    // Отключить ввод и кнопку отправки
     answerInput.disabled = true;
     submitBtn.disabled = true;
     
-    // Обновить индикатор прогресса
     updateProgressBar();
     
-    // Проверить, все ли вопросы отвечены
     if (userAnswers.every(answer => answer !== null)) {
         showResults();
     }
 }
 
-// Показать обратную связь по ответу
 function showAnswerFeedback(answer) {
     resetAnswerFeedback();
     
@@ -148,14 +130,12 @@ function showAnswerFeedback(answer) {
     }
 }
 
-// Сбросить обратную связь по ответу
 function resetAnswerFeedback() {
     correctAnswerDiv.style.display = 'none';
     incorrectAnswerDiv.style.display = 'none';
     answerInput.classList.remove('correct', 'incorrect');
 }
 
-// Показать предыдущий вопрос
 function showPreviousQuestion() {
     if (currentIndex > 0) {
         currentIndex--;
@@ -164,7 +144,6 @@ function showPreviousQuestion() {
     }
 }
 
-// Показать следующий вопрос
 function showNextQuestion() {
     if (currentIndex < currentCards.length - 1) {
         currentIndex++;
@@ -173,25 +152,21 @@ function showNextQuestion() {
     }
 }
 
-// Обновить состояние кнопок навигации
 function updateNavigationButtons() {
     prevBtn.disabled = currentIndex === 0;
     nextBtn.disabled = currentIndex === currentCards.length - 1;
 }
 
-// Обновить отображение общего количества вопросов
 function updateTotalQuestions() {
     totalCardsSpan.textContent = currentCards.length;
 }
 
-// Обновить индикатор прогресса
 function updateProgressBar() {
     const answeredCount = userAnswers.filter(answer => answer !== null).length;
     const progress = (answeredCount / currentCards.length) * 100;
     progressBar.style.width = `${progress}%`;
 }
 
-// Показать результаты теста
 function showResults() {
     const correctCount = userAnswers.filter(answer => answer.isCorrect).length;
     const totalQuestions = currentCards.length;
@@ -200,7 +175,6 @@ function showResults() {
     scoreDisplay.textContent = correctCount;
     totalQuestionsDisplay.textContent = totalQuestions;
     
-    // Установить сообщение результата в зависимости от производительности
     if (percentage === 100) {
         resultMessage.textContent = "Идеально! Вы знаете все столицы!";
     } else if (percentage >= 80) {
@@ -213,21 +187,17 @@ function showResults() {
         resultMessage.textContent = "Продолжайте практиковаться! Со временем вы станете лучше!";
     }
     
-    // Скрыть карточку теста и показать результаты
     testCard.style.display = 'none';
     resultContainer.style.display = 'block';
     testSubmitted = true;
 }
 
-// Перезапустить тест
 function restartTest() {
     loadContinent(currentContinent);
 }
 
-// Обработчик изменения континента
 function handleContinentChange(e) {
     loadContinent(e.target.value);
 }
 
-// Инициализировать приложение после загрузки DOM
 document.addEventListener('DOMContentLoaded', init);
