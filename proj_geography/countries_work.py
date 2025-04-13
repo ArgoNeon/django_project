@@ -1,6 +1,7 @@
 import csv
+import json
 
-def countries_for_tables():
+def get_countries_for_tables():
     result = {}
     
     with open('./data/countries.csv', mode='r', encoding='utf-8') as file:
@@ -17,4 +18,15 @@ def countries_for_tables():
                 result[continent] = []
             result[continent].append(country_data)
     
+    return result
+
+def get_countries_for_lessons():
+    countries = []
+    with open('./data/countries.csv', 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file, delimiter=';')
+        for row in reader:
+            countries.append(row)
+
+    result = json.dumps(countries, ensure_ascii=False)
+
     return result

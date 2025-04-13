@@ -1,5 +1,6 @@
+import csv
+import json
 from django.shortcuts import render
-from django.core.cache import cache
 
 from . import countries_work
 
@@ -7,7 +8,7 @@ def index(request):
     return render(request, "index.html")
 
 def countries(request):    
-    countries = countries_work.countries_for_tables()
+    countries = countries_work.get_countries_for_tables()
     context = {
         'africa_countries': countries.get('Africa', []),
         'asia_countries': countries.get('Asia', []),
@@ -19,10 +20,17 @@ def countries(request):
     return render(request, "countries.html", context=context)
 
 def lessons(request):
-    return render(request, "lessons.html")
+    countries_json = countries_work.get_countries_for_lessons()
+
+    context = {'countries': countries_json}
+
+    return render(request, 'lessons.html', context=context)
 
 def tests(request):
     return render(request, "tests.html")
 
 def change_database(request):
     return render(request, "change_database.html")
+
+def get_database(request):
+    return render(request, "countries.csv")

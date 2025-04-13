@@ -24,5 +24,6 @@ urlpatterns = [
     path('countries', views.countries),
     path('lessons', views.lessons),
     path('tests', views.tests),
-    path('change_database', views.change_database)
+    path('change_database', views.change_database),
+    path('get_database', views.get_database)
 ]

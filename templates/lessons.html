@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GeoMaster - Изучение столиц стран{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/lessons_style.css' %}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+    <header class="bg-primary text-white py-5 shadow">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">GeoMaster</h1>
+            <p class="lead fs-4 opacity-90">Изучайте столицы стран мира</p>
+        </div>
+    </header>
+    {% endblock %}
+
+    {% block navigation %}
+    <nav class="bg-light py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="btn btn-outline-primary">На главную</a>
+        </div>
+    </nav>
+    {% endblock %}
+    
+    {% block main %}
+    <main class="py-5">
+        <div class="container">
+            {% block intro %}
+            <section class="intro bg-white p-4 p-md-5 rounded shadow-sm text-center mb-5">
+                <h2 class="text-primary mb-3">Уроки по столицам стран</h2>
+                <p class="lead">Выберите континент для изучения конкретного региона. Переворачивайте карточки, чтобы изучать столицы стран мира.</p>
+            </section>
+            {% endblock %}
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    {% block continent_selector %}
+                    <div class="continent-selector bg-white p-4 rounded shadow-sm mb-4">
+                        <h3 class="text-primary mb-3">Выберите континент</h3>
+                        <select id="continent-select" class="form-select">
+                            <option value="Europe">Европа</option>
+                            <option value="Asia">Азия</option>
+                            <option value="Africa">Африка</option>
+                            <option value="North America">Северная Америка</option>
+                            <option value="South America">Южная Америка</option>
+                            <option value="Oceania">Океания</option>
+                        </select>
+                    </div>
+                    {% endblock %}
+                    
+                    {% block loading_message %}
+                    <div id="loading-message" class="loading-message" style="display: none;">
+                        Загрузка данных о странах...
+                    </div>
+                    {% endblock %}
+                    
+                    {% block content %}
+                    <div id="content">
+                        {% block card_counter %}
+                        <div class="card-counter">
+                            Карточка <span id="current-card">1</span> из <span id="total-cards">0</span>
+                        </div>
+                        {% endblock %}
+                        
+                        {% block flashcard %}
+                        <div class="flashcard-container">
+                            <div id="flashcard" class="flashcard">
+                                <div class="flashcard-face flashcard-front">
+                                    <h3 id="country-name">Выберите континент для начала</h3>
+                                </div>
+                                <div class="flashcard-face flashcard-back">
+                                    <h3 id="capital-name"></h3>
+                                </div>
+                            </div>
+                        </div>
+                        {% endblock %}
+                        
+                        {% block navigation_buttons %}
+                        <div class="navigation-buttons">
+                            <button id="prev-btn" class="btn btn-outline-primary px-4" disabled>
+                                Назад
+                            </button>
+                            <button id="flip-btn" class="btn btn-primary px-4">
+                                Перевернуть
+                            </button>
+                            <button id="next-btn" class="btn btn-outline-primary px-4" disabled>
+                                Вперед
+                            </button>
+                        </div>
+                        {% endblock %}
+                        
+                        {% block shuffle_button %}
+                        <div class="text-center">
+                            <button id="shuffle-btn" class="btn btn-secondary me-2">Перемешать</button>
+                        </div>
+                        {% endblock %}
+                    </div>
+                    {% endblock %}
+                    
+                    {% block keyboard_shortcuts %}
+                    <div class="keyboard-shortcuts mt-4">
+                        <p>Горячие клавиши: Пробел - перевернуть, ← → - навигация</p>
+                    </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+    {% endblock %}
+    
+    {% block footer %}
+    <footer class="bg-dark text-white py-5 mt-4">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2025 GeoMaster</p>
+            <p class="small opacity-80">Образовательный инструмент для любителей географии</p>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block scripts %}
+    <script>
+    const allCountries = JSON.parse('{{ countries|escapejs }}');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/lessons_script.js' %}"></script>
+    {% endblock %}
+</body>
+</html>
