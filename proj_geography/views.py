@@ -20,14 +20,18 @@ def countries(request):
     return render(request, "countries.html", context=context)
 
 def lessons(request):
-    countries_json = countries_work.get_countries_for_lessons()
+    countries_json = countries_work.get_all_countries()
 
     context = {'countries': countries_json}
 
-    return render(request, 'lessons.html', context=context)
+    return render(request, "lessons.html", context=context)
 
 def tests(request):
-    return render(request, "tests.html")
+    countries_json = countries_work.get_all_countries()
+
+    context = {'countries': countries_json}
+
+    return render(request, "tests.html", context=context)
 
 def change_database(request):
     return render(request, "change_database.html")

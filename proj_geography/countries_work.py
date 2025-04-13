@@ -20,7 +20,7 @@ def get_countries_for_tables():
     
     return result
 
-def get_countries_for_lessons():
+def get_all_countries():
     countries = []
     with open('./data/countries.csv', 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file, delimiter=';')

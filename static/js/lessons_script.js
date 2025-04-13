@@ -9,7 +9,6 @@ const flipBtn = document.getElementById('flip-btn');
 const shuffleBtn = document.getElementById('shuffle-btn');
 const currentCardSpan = document.getElementById('current-card');
 const totalCardsSpan = document.getElementById('total-cards');
-const loadingMessage = document.getElementById('loading-message');
 const content = document.getElementById('content');
 
 let currentContinent = 'Europe';
@@ -17,10 +16,7 @@ let currentCards = [];
 let currentIndex = 0;
 
 function init() {
-    loadingMessage.style.display = 'none';
-    
     loadContinent(currentContinent);
-    
     initEventHandlers();
 }
 
