@@ -1,7 +1,7 @@
 const allCountries = {};
 
 countriesData.forEach(country => {
-    const continent = country.continent.toLowerCase();
+    const continent = country.continent;
     if (!allCountries[continent]) {
         allCountries[continent] = [];
     }
