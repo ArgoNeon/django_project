@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GeoMaster - Управление базой данных{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/change_database_style.css' %}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+    <header class="bg-primary text-white py-5 shadow">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">GeoMaster</h1>
+            <p class="lead fs-4 opacity-90">Управление базой данных стран мира</p>
+        </div>
+    </header>
+    {% endblock %}
+
+    {% block navigation %}
+    <nav class="bg-light py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="btn btn-outline-primary">На главную</a>
+        </div>
+    </nav>
+    {% endblock %}
+    
+    {% block content %}
+    <main class="py-5">
+        <div class="container">
+            <div class="database-container">
+                {% block forms %}
+                <div class="form-card">
+                    <h2 class="form-title">Добавить новую страну</h2>
+                    
+                    <form id="country-form">
+                        {% block add_form %}
+                        <div class="form-group">
+                            <label for="continent-select" class="form-label">Континент</label>
+                            <select id="continent-select" class="form-select" required>
+                                <option value="" selected disabled>Выберите континент</option>
+                                <option value="europe">Европа</option>
+                                <option value="asia">Азия</option>
+                                <option value="africa">Африка</option>
+                                <option value="north-america">Северная Америка</option>
+                                <option value="south-america">Южная Америка</option>
+                                <option value="oceania">Океания</option>
+                            </select>
+                            <div class="invalid-feedback">Пожалуйста, выберите континент</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="country-input" class="form-label">Название страны</label>
+                            <input type="text" id="country-input" class="form-control" placeholder="Введите название страны" required>
+                            <div class="invalid-feedback" id="country-error">Введите корректное название страны</div>
+                            <div class="valid-feedback">Название страны корректно</div>
+                            <div class="validation-message" id="country-exists"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="capital-input" class="form-label">Название столицы</label>
+                            <input type="text" id="capital-input" class="form-control" placeholder="Введите название столицы" required>
+                            <div class="invalid-feedback" id="capital-error">Введите корректное название столицы</div>
+                            <div class="valid-feedback">Название столицы корректно</div>
+                            <div class="validation-message" id="capital-exists"></div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" id="reset-btn" class="btn btn-outline-secondary me-md-2">Сбросить</button>
+                            <button type="submit" id="submit-btn" class="btn btn-primary">Сохранить</button>
+                        </div>
+                        {% endblock %}
+                    </form>
+                </div>
+                
+                <div class="form-card">
+                    <h2 class="form-title">Удалить страну</h2>
+                    
+                    <form id="delete-country-form">
+                        {% block delete_form %}
+                        <div class="form-group">
+                            <label for="delete-continent-select" class="form-label">Континент</label>
+                            <select id="delete-continent-select" class="form-select" required>
+                                <option value="" selected disabled>Выберите континент</option>
+                                <option value="europe">Европа</option>
+                                <option value="asia">Азия</option>
+                                <option value="africa">Африка</option>
+                                <option value="north-america">Северная Америка</option>
+                                <option value="south-america">Южная Америка</option>
+                                <option value="oceania">Океания</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="delete-country-select" class="form-label">Страна</label>
+                            <select id="delete-country-select" class="form-select" disabled required>
+                                <option value="" selected disabled>Сначала выберите континент</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" id="reset-delete-btn" class="btn btn-outline-secondary me-md-2">Сбросить</button>
+                            <button type="submit" id="submit-delete-btn" class="btn btn-danger">Удалить</button>
+                        </div>
+                        {% endblock %}
+                    </form>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+    {% endblock %}
+    
+    {% block footer %}
+    <footer class="bg-dark text-white py-5 mt-4">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2025 GeoMaster</p>
+            <p class="small opacity-80">Образовательный инструмент для любителей географии</p>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block scripts %}
+    <script>
+        const countriesData = JSON.parse('{{ countries|escapejs }}');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/change_database_script.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

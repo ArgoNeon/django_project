@@ -1,6 +1,8 @@
 import csv
 import json
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from . import countries_work
 
@@ -34,7 +36,30 @@ def tests(request):
     return render(request, "tests.html", context=context)
 
 def change_database(request):
-    return render(request, "change_database.html")
+    countries_json = countries_work.get_all_countries()
 
-def get_database(request):
-    return render(request, "countries.csv")
+    context = {'countries': countries_json}
+
+    return render(request, "change_database.html", context=context)
+
+@csrf_exempt
+def add_country(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            result = countries_work.add_country_to_csv(data)
+            return JsonResponse(result)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+@csrf_exempt
+def delete_country(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            result = countries_work.delete_country_from_csv(data)
+            return JsonResponse(result)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid method'})
