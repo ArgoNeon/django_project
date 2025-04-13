@@ -1,4 +1,3 @@
-import csv
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -9,7 +8,7 @@ from . import countries_work
 def index(request):
     return render(request, "index.html")
 
-def countries(request):    
+def countries_table(request):    
     countries = countries_work.get_countries_for_tables()
     context = {
         'africa_countries': countries.get('Africa', []),
@@ -63,3 +62,4 @@ def delete_country(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid method'})
+    
